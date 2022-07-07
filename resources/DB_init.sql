@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS roles
 CREATE TABLE IF NOT EXISTS users
 (
     id       SERIAL PRIMARY KEY,
-    nickname VARCHAR(128) NOT NULL,
+    nickname VARCHAR(128) NOT NULL UNIQUE,
     role     INT REFERENCES roles(id),
     email    VARCHAR(128) NOT NULL UNIQUE,
     password VARCHAR(128) NOT NULL
@@ -58,18 +58,9 @@ CREATE TABLE IF NOT EXISTS comments
     comment    TEXT --or VARCHAR is preferable to use?
 );
 
---list of restaurants
 CREATE TABLE IF NOT EXISTS rest_list
 (
     id   SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
     rest INT REFERENCES restaurant (id)
-);
-
---link from user to the list of restaurants (for instance, "Travel to Minsk",
--- "Travel to Moscow" or "Favourites"
-CREATE TABLE IF NOT EXISTS user_rest_list
-(
-    id      INT REFERENCES rest_list (id) PRIMARY KEY,
-    name    VARCHAR(128) NOT NULL UNIQUE, --name of the list
-    user_id INT REFERENCES users (id)
 );
